@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florida B.E.S.T. 6th Grade ELA - ELA.6.R.2.2 Central Idea Lab</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ocean: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49'
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            900: '#164e63'
+                        },
+                        emerald: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #0284c7; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #0284c7;
+            color: #0284c7;
+            font-weight: 700;
+        }
+
+        .highlight-detail {
+            background-color: rgba(14, 165, 233, 0.2);
+            border-bottom: 2px dashed #0284c7;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .highlight-detail:hover {
+            background-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 flex flex-col min-h-screen font-sans antialiased">
+
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-30 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-ocean-600 to-cyan-400 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+                    <i data-lucide="compass" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-ocean-950 border border-ocean-600 text-cyan-400 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider">FL B.E.S.T. Informational</span>
+                        <span class="text-xs font-semibold text-slate-400">ELA.6.R.2.2</span>
+                    </div>
+                    <h1 class="text-base sm:text-lg font-bold text-white">
+                        6th Grade Central Idea & Details Lab
+                    </h1>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex items-center bg-slate-800 border border-slate-700 rounded-full px-3 py-1">
+                    <i data-lucide="award" class="w-4 h-4 text-cyan-400 mr-2"></i>
+                    <span class="text-xs font-medium text-slate-300">Mastery Level: <strong id="badgeStatusText" class="text-cyan-400">Novice Explorer (0/8)</strong></span>
+                </div>
+
+                <button id="mobileSidebarBtn" onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Main Interactive Canvas & Tabs -->
+        <main class="lg:col-span-8 flex flex-col space-y-6">
+            
+            <!-- Underwater Sonar Video Animation Canvas Container -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden flex flex-col relative group">
+                
+                <!-- Canvas Viewport -->
+                <div class="relative w-full aspect-video bg-slate-950 flex items-center justify-center overflow-hidden">
+                    <canvas id="sonarCanvas" class="w-full h-full object-contain cursor-pointer"></canvas>
+                    
+                    <!-- Play Overlay -->
+                    <div id="playOverlay" onclick="togglePlay()" class="absolute inset-0 bg-slate-950/50 backdrop-blur-[1px] flex items-center justify-center cursor-pointer transition-opacity duration-300">
+                        <div class="w-20 h-20 rounded-full bg-ocean-600/90 border border-cyan-400/50 text-white flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300">
+                            <i id="overlayPlayIcon" data-lucide="play" class="w-10 h-10 ml-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- Scene Chapter Badge -->
+                    <div class="absolute top-3 left-3 bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-700/80 text-xs font-semibold text-cyan-400 flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                        <span id="canvasChapterTitle">Expedition 1: The Dark Frontier</span>
+                    </div>
+
+                    <!-- Real-time Sonar Telemetry Stats Overlay -->
+                    <div class="absolute top-3 right-3 bg-slate-900/80 border border-slate-800 p-2 rounded-lg text-[10px] font-mono text-slate-300 space-y-1 hidden sm:block">
+                        <div>DEPTH: <span id="depthVal" class="text-cyan-400">3,420m</span></div>
+                        <div>SONAR: <span id="sonarStatus" class="text-emerald-400">ACTIVE SCAN</span></div>
+                    </div>
+
+                    <!-- Caption Subtitle Banner -->
+                    <div class="absolute bottom-3 left-4 right-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 p-3 rounded-xl text-center">
+                        <p id="captionText" class="text-xs sm:text-sm font-medium text-cyan-200 italic">
+                            "Press play to launch the deep-sea autonomous ocean floor mapping expedition."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Custom Audio/Video Controls Bar -->
+                <div class="bg-slate-900 px-4 py-3 text-white flex flex-col space-y-2 border-t border-slate-800 select-none">
+                    <!-- Progress Bar Scrubber -->
+                    <div class="relative flex items-center">
+                        <input type="range" id="timelineSlider" min="0" max="100" value="0" step="0.1" 
+                            oninput="seekVideo(this.value)" 
+                            class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400 focus:outline-none">
+                        
+                        <!-- Timeline Chapter Markers -->
+                        <div id="chapterMarkersContainer" class="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none px-1"></div>
+                    </div>
+
+                    <!-- Control Buttons -->
+                    <div class="flex items-center justify-between text-xs sm:text-sm pt-1">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="togglePlay()" class="p-1.5 hover:bg-slate-800 rounded-lg text-slate-300 hover:text-white transition">
+                                <i id="playBtnIcon" data-lucide="play" class="w-5 h-5"></i>
+                            </button>
+                            <button onclick="restartVideo()" class="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition" title="Restart Expedition">
+                                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                            </button>
+                            <span class="font-mono text-slate-400 text-xs">
+                                <span id="currentTimeText">00:00</span> / <span id="durationTimeText">02:40</span>
+                            </span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <select id="speedSelect" onchange="changeSpeed(this.value)" class="bg-slate-800 text-slate-300 text-xs py-1 px-2 rounded border border-slate-700 focus:outline-none">
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1.0x</option>
+                                <option value="1.25">1.25x</option>
+                            </select>
+
+                            <button onclick="toggleAudioMute()" class="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white">
+                                <i id="volumeIcon" data-lucide="volume-2" class="w-4 h-4"></i>
+                            </button>
+
+                            <button onclick="toggleFullscreen()" class="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition">
+                                <i data-lucide="maximize" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-md overflow-hidden flex flex-col">
+                <!-- Navigation Tabs Header -->
+                <div class="flex border-b border-slate-800 bg-slate-950 overflow-x-auto">
+                    <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn active px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-medium text-slate-400 flex items-center space-x-2 whitespace-nowrap">
+                        <i data-lucide="help-circle" class="w-4 h-4"></i>
+                        <span>B.E.S.T. Quiz (8 Questions)</span>
+                    </button>
+                    <button onclick="switchTab('passage')" id="tab-passage" class="tab-btn px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-medium text-slate-400 flex items-center space-x-2 whitespace-nowrap">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        <span>Interactive Article Reader</span>
+                    </button>
+                    <button onclick="switchTab('organizer')" id="tab-organizer" class="tab-btn px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-medium text-slate-400 flex items-center space-x-2 whitespace-nowrap">
+                        <i data-lucide="pyramid" class="w-4 h-4"></i>
+                        <span>Central Idea Builder</span>
+                    </button>
+                    <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-medium text-slate-400 flex items-center space-x-2 whitespace-nowrap">
+                        <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        <span>Researcher Notes</span>
+                    </button>
+                </div>
+
+                <!-- Tab Contents Container -->
+                <div class="p-4 sm:p-6">
+                    
+                    <!-- TAB 1: Florida B.E.S.T. Assessment Quiz -->
+                    <div id="content-quiz" class="tab-content space-y-5">
+                        
+                        <!-- Quiz Header Scoreboard -->
+                        <div class="bg-slate-950 border border-slate-800 text-white rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div>
+                                <div class="text-xs text-cyan-400 font-semibold uppercase tracking-wider">Florida B.E.S.T. Assessment Practice</div>
+                                <h3 class="text-sm sm:text-base font-bold text-white">ELA.6.R.2.2 Central Idea & Relevant Details</h3>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4 w-full sm:w-auto justify-between sm:justify-end">
+                                <div class="text-center">
+                                    <div class="text-xs text-slate-400">Mastery Score</div>
+                                    <div id="quizScoreDisplay" class="text-lg font-black text-cyan-400">0 / 8</div>
+                                </div>
+                                <div class="w-24 sm:w-32 bg-slate-900 h-3 rounded-full overflow-hidden border border-slate-800">
+                                    <div id="quizProgressBar" class="bg-gradient-to-r from-ocean-500 to-cyan-400 h-full w-0 transition-all duration-300"></div>
+                                </div>
+                                <button onclick="resetQuizState()" class="p-2 text-slate-400 hover:text-white bg-slate-900 border border-slate-800 rounded-lg" title="Retake Quiz">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Questions Container -->
+                        <div id="quizContainer" class="space-y-6">
+                            <!-- Injected dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Interactive Informational Text Reader -->
+                    <div id="content-passage" class="tab-content hidden space-y-4">
+                        <div class="bg-ocean-950/80 border border-ocean-800/80 rounded-xl p-3 text-xs text-cyan-200 flex items-center space-x-2">
+                            <i data-lucide="info" class="w-4 h-4 text-cyan-400 shrink-0"></i>
+                            <span>Click on the <mark class="highlight-detail">highlighted supporting details</mark> to analyze how the author develops the central idea!</span>
+                        </div>
+
+                        <div class="prose prose-invert max-w-none text-xs sm:text-sm leading-relaxed space-y-4 bg-slate-950 p-5 rounded-xl border border-slate-800">
+                            <h3 class="text-base font-bold text-white border-b border-slate-800 pb-2">
+                                The Deep-Sea Revolution: How Autonomous Submersibles Map the Uncharted Ocean Floor
+                            </h3>
+                            <p>
+                                More than eighty percent of Earth's ocean floor remains completely unmapped, hidden beneath miles of pitch-black water. For centuries, oceanographers relied on slow, expensive ships dropping heavy cables to estimate depth. However, 
+                                <span class="highlight-detail" onclick="showDetailAnalysis(1)">a technological revolution is underway: autonomous underwater submersibles equipped with high-frequency multibeam sonar are rapidly mapping the ocean seabed with millimeter precision.</span>
+                            </p>
+                            <p>
+                                Unlike traditional surface ships that struggle with wave interference, these robotic submersibles dive thousands of meters below the surface. 
+                                <span class="highlight-detail" onclick="showDetailAnalysis(2)">By gliding close to the seafloor, submersibles emit thousands of acoustic sound pulses per second, accurately measuring underwater trenches, volcanic ridges, and abyssal plains.</span> 
+                                This underwater acoustic mapping generates 3D bathymetric maps in hours rather than months.
+                            </p>
+                            <p>
+                                Beyond pure scientific curiosity, 
+                                <span class="highlight-detail" onclick="showDetailAnalysis(3)">these detailed seafloor maps provide essential data for predicting tsunami pathways, protecting fragile deep-sea coral ecosystems, and safely installing transoceanic telecommunication cables.</span> 
+                                Autonomous robotic submersibles represent a giant leap forward in human ocean literacy, turning an impenetrable liquid void into a fully mapped frontier.
+                            </p>
+                        </div>
+
+                        <div id="detailAnalysisBox" class="hidden p-4 bg-slate-950 border border-cyan-500/40 rounded-xl text-xs space-y-1">
+                            <div class="font-bold flex items-center space-x-1.5 text-cyan-400">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                <span id="detailAnalysisTitle">Supporting Detail Breakdown</span>
+                            </div>
+                            <p id="detailAnalysisText" class="text-slate-300">Select a detail above to analyze its relationship to the central idea.</p>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Central Idea Builder / Pyramid Graphic Organizer -->
+                    <div id="content-organizer" class="tab-content hidden space-y-5">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-white text-sm sm:text-base">Central Idea Pyramid Formula Builder</h3>
+                            <button onclick="resetOrganizer()" class="text-xs text-slate-400 hover:text-cyan-400 flex items-center space-x-1">
+                                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                <span>Reset Pyramid</span>
+                            </button>
+                        </div>
+
+                        <p class="text-xs text-slate-400">In 6th-grade Florida B.E.S.T., Central Idea is constructed by combining: <strong>Topic + Author's Key Point + Supporting Evidence</strong>.</p>
+
+                        <!-- Graphic Organizer Structure -->
+                        <div class="space-y-3">
+                            <!-- Pyramid Level 1: Topic -->
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
+                                <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider">Level 1: General Topic (What is the text about?)</span>
+                                <select id="orgStep1" onchange="checkOrganizerFormula()" class="w-full text-xs p-2 rounded-lg border border-slate-800 bg-slate-900 text-slate-200 focus:outline-none focus:border-cyan-500">
+                                    <option value="">-- Select the Topic --</option>
+                                    <option value="ocean">The Pacific Ocean</option>
+                                    <option value="submersibles">Autonomous submersibles mapping the ocean floor</option>
+                                    <option value="cables">Underwater telecommunication internet cables</option>
+                                </select>
+                            </div>
+
+                            <!-- Pyramid Level 2: Main Point -->
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
+                                <span class="text-[10px] font-bold text-ocean-500 uppercase tracking-wider">Level 2: Author's Main Point (What about the topic?)</span>
+                                <select id="orgStep2" onchange="checkOrganizerFormula()" class="w-full text-xs p-2 rounded-lg border border-slate-800 bg-slate-900 text-slate-200 focus:outline-none focus:border-ocean-500">
+                                    <option value="">-- Select Author's Main Point --</option>
+                                    <option value="revolutionize">Robotic submersibles are revolutionizing ocean mapping through high-precision sonar technology.</option>
+                                    <option value="expensive">Ships dropping heavy cables are too expensive for research.</option>
+                                    <option value="scuba">Scuba divers cannot reach the bottom of ocean trenches.</option>
+                                </select>
+                            </div>
+
+                            <!-- Pyramid Level 3: Key Supporting Evidence -->
+                            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
+                                <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Level 3: Primary Supporting Purpose (Why does it matter?)</span>
+                                <select id="orgStep3" onchange="checkOrganizerFormula()" class="w-full text-xs p-2 rounded-lg border border-slate-800 bg-slate-900 text-slate-200 focus:outline-none focus:border-emerald-500">
+                                    <option value="">-- Select Primary Purpose/Evidence --</option>
+                                    <option value="benefit">These detailed maps protect ecosystems, predict tsunamis, and guide cable placement.</option>
+                                    <option value="fish">Deep sea fish are blind because of darkness.</option>
+                                    <option value="coral">Scientists prefer looking at 3D maps on computers.</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="organizerResult" class="p-4 rounded-xl border border-slate-800 bg-slate-950 text-xs text-slate-400 text-center font-medium">
+                            Select all 3 levels above to synthesize the complete Central Idea statement!
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Researcher ELA Notes Pad -->
+                    <div id="content-notes" class="tab-content hidden space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-white text-sm flex items-center">
+                                <i data-lucide="edit-3" class="w-4 h-4 text-cyan-400 mr-1.5"></i>
+                                ELA.6.R.2.2 Informational Text Analysis Notes
+                            </h3>
+                            <button onclick="exportNotes()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-1.5 rounded-lg border border-slate-700 font-medium flex items-center space-x-1">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                <span>Export TXT</span>
+                            </button>
+                        </div>
+                        <textarea id="elaNotes" rows="5" placeholder="Write key evidence notes here (e.g., Central idea = Topic + What the author proves about it...)" class="w-full p-3 text-xs sm:text-sm border border-slate-800 rounded-xl focus:ring-1 focus:ring-cyan-500 focus:outline-none bg-slate-950 text-slate-200"></textarea>
+                        <div class="flex justify-between items-center text-[11px] text-slate-500">
+                            <span id="noteSaveStatus">Auto-saved to browser</span>
+                            <button onclick="insertFormulaPrompt()" class="text-cyan-400 font-semibold hover:underline">
+                                + Insert Florida B.E.S.T. Central Idea Checklist
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <aside id="sidebar" class="lg:col-span-4 bg-slate-900 rounded-2xl border border-slate-800 shadow-md p-4 sm:p-5 flex flex-col space-y-5">
+            
+            <!-- Standard Header Card -->
+            <div class="border-b border-slate-800 pb-3">
+                <span class="bg-ocean-950 border border-ocean-700 text-cyan-400 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Florida Benchmark</span>
+                <h2 class="font-bold text-white text-base sm:text-lg mt-1">ELA.6.R.2.2 Central Idea</h2>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Analyze the central idea(s), implied or explicit, and its development throughout an informational text.
+                </p>
+            </div>
+
+            <!-- Expedition Video Chapters -->
+            <div class="space-y-2">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Video Expedition Chapters</h4>
+                <div id="chapterList" class="space-y-2">
+                    <!-- Injected via JavaScript -->
+                </div>
+            </div>
+
+            <!-- B.E.S.T. Strategy Tip Card -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-2 text-xs">
+                <h4 class="font-bold text-cyan-400 flex items-center space-x-1.5">
+                    <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                    <span>B.E.S.T. Tip: Topic vs. Central Idea</span>
+                </h4>
+                <ul class="space-y-2 text-slate-300 text-[11px] leading-snug">
+                    <li class="flex items-start">
+                        <strong class="text-rose-400 mr-1 shrink-0">❌ Topic:</strong> "Ocean Mapping" (Too broad; just a subject word).
+                    </li>
+                    <li class="flex items-start">
+                        <strong class="text-emerald-400 mr-1 shrink-0">✅ Central Idea:</strong> "Autonomous submersibles are revolutionizing ocean mapping by providing precise seafloor data essential for science and safety."
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mastery Checklist Box -->
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-2">
+                <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-xs uppercase tracking-wide text-slate-400">Mastery Checklist</h4>
+                    <span id="checklistCount" class="text-[11px] font-bold text-cyan-400">0/3 Completed</span>
+                </div>
+                <div id="checkListContainer" class="space-y-2 text-xs text-slate-300">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <script>
+        const CHAPTERS = [
+            { id: 0, time: 0, title: "1. The Uncharted Abyss", desc: "Why traditional ocean mapping failed.", cue: "80% of ocean seabed remains unmapped!" },
+            { id: 1, time: 40, title: "2. Autonomous Submersibles", desc: "Technological innovation in acoustics.", cue: "Multibeam sonar dives thousands of meters down." },
+            { id: 2, time: 90, title: "3. Sonar Bathymetry Mapping", desc: "Generating precise 3D seafloor maps.", cue: "Thousands of sound pulses measure trenches & ridges." },
+            { id: 3, time: 130, title: "4. Real-World Applications", desc: "Tsunami modeling and environmental safety.", cue: "Synthesizing the Central Idea & key benefits!" }
+        ];
+
+        const QUIZ_QUESTIONS = [
+            {
+                id: 1,
+                category: "Explicit Central Idea",
+                question: "Which statement best expresses the EXPLICIT central idea of 'The Deep-Sea Revolution'?",
+                options: [
+                    "A. Traditional surface ships drop heavy steel cables to measure water depth.",
+                    "B. Autonomous robotic submersibles equipped with sonar are revolutionizing ocean floor mapping by producing precise 3D maps.",
+                    "C. Pitch-black water prevents sunlight from penetrating the ocean floor.",
+                    "D. Telecommunication cables allow high-speed internet to travel between continents."
+                ],
+                correct: 1,
+                explanation: "Correct! Option B summarizes the overarching focus of the entire passage. Options A, C, and D are minor supporting details."
+            },
+            {
+                id: 2,
+                category: "Part A: Implied Central Idea",
+                question: "[PART A] What implied central idea does the author convey regarding modern oceanography?",
+                options: [
+                    "A. Ancient sailors were superior at ocean mapping compared to modern scientists.",
+                    "B. Advancements in autonomous robotics are critical for expanding human knowledge and safety in previously unreachable frontiers.",
+                    "C. Ocean floor mapping will eventually replace all surface sea transportation.",
+                    "D. Mapping the ocean is too expensive to continue in the future."
+                ],
+                correct: 1,
+                explanation: "Correct! The author implies that autonomous technology is indispensable for exploring hostile, unknown environments like the deep ocean."
+            },
+            {
+                id: 3,
+                category: "Part B: Textual Evidence Selection",
+                question: "[PART B] Which sentence from the passage best supports the answer to Part A?",
+                options: [
+                    "A. 'More than eighty percent of Earth's ocean floor remains completely unmapped...'",
+                    "B. 'Autonomous robotic submersibles represent a giant leap forward in human ocean literacy, turning an impenetrable liquid void into a fully mapped frontier.'",
+                    "C. 'For centuries, oceanographers relied on slow, expensive ships dropping heavy cables...'",
+                    "D. 'This underwater acoustic mapping generates 3D bathymetric maps in hours...'"
+                ],
+                correct: 1,
+                explanation: "Correct! Quote B explicitly states how submersibles represent a giant leap in literacy and exploration, supporting Part A."
+            },
+            {
+                id: 4,
+                category: "Topic vs. Central Idea",
+                question: "A student writes: 'The central idea of this article is SONAR.' How should the teacher correct this statement according to Florida B.E.S.T. standards?",
+                options: [
+                    "A. 'SONAR' is a topic word; a central idea must be a complete sentence stating what the author proves about sonar submersibles.",
+                    "B. 'SONAR' is incorrect because the article is actually about scuba diving.",
+                    "C. Central ideas must be at least four paragraphs long.",
+                    "D. The central idea should only focus on internet cables."
+                ],
+                correct: 0,
+                explanation: "Correct! A single word or phrase is a TOPIC. A CENTRAL IDEA is a full statement explaining the author's primary takeaway about that topic."
+            },
+            {
+                id: 5,
+                category: "Supporting Detail Development",
+                question: "How does Paragraph 2 develop the central idea established in Paragraph 1?",
+                options: [
+                    "A. By explaining the specific technical process of how sonar pulses on submersibles map deep seafloor features.",
+                    "B. By arguing that traditional surface ships are faster than robotic submersibles.",
+                    "C. By listing the names of all ocean trenches discovered in the Pacific.",
+                    "D. By discussing the historical cost of cable manufacturing."
+                ],
+                correct: 0,
+                explanation: "Correct! Paragraph 2 elaborates on the central idea by demonstrating HOW the sonar submersibles operate to generate 3D maps."
+            },
+            {
+                id: 6,
+                category: "Paragraph Structure & Central Idea",
+                question: "Why does the author include Paragraph 3 ('Beyond pure scientific curiosity...')?",
+                options: [
+                    "A. To prove that mapping the ocean floor has practical real-world benefits for safety, ecosystems, and communication.",
+                    "B. To persuade readers to buy personal submersibles for deep sea diving.",
+                    "C. To explain how tsunamis are created by earthquakes.",
+                    "D. To show that deep sea coral reefs do not need protection."
+                ],
+                correct: 0,
+                explanation: "Correct! Paragraph 3 reinforces the central idea by showing WHY ocean mapping matters beyond academic research (real-world applications)."
+            },
+            {
+                id: 7,
+                category: "Eliminating Minor Details",
+                question: "Which of the following details would be LEAST important to include in an objective summary of the article?",
+                options: [
+                    "A. Traditional ship mapping methods dropped heavy cables.",
+                    "B. Submersibles emit acoustic sound pulses to create 3D bathymetric maps.",
+                    "C. Over eighty percent of the seabed has historically remained unmapped.",
+                    "D. Detailed seafloor mapping assists with tsunami prediction and cable installation."
+                ],
+                correct: 0,
+                explanation: "Correct! Mentioning the historic heavy cables is a minor background detail compared to the main points about submersible mapping technology."
+            },
+            {
+                id: 8,
+                category: "Synthesizing Summary Statements",
+                question: "Which sentence provides the best objective summary combining the central idea and key details?",
+                options: [
+                    "A. Submersibles are cool underwater robots that make colorful maps of fish habitats.",
+                    "B. High-tech autonomous submersibles use acoustic sonar to rapidly map unmapped ocean floors, providing vital data for scientific research, hazard protection, and infrastructure.",
+                    "C. Surface ships are obsolete and should no longer be used by oceanographers.",
+                    "D. Tsunamis and internet cables are the two most dangerous things in the deep sea."
+                ],
+                correct: 1,
+                explanation: "Correct! Option B accurately combines the topic, technology, central idea, and key supporting details without subjective opinion."
+            }
+        ];
+
+        let isPlaying = false;
+        let currentTime = 0;
+        let duration = 160;
+        let playbackSpeed = 1.0;
+        let currentChapterIndex = 0;
+        let animationFrameId = null;
+        let audioCtx = null;
+        let masterChecklist = { c1: false, c2: false, c3: false };
+        let userQuizAnswers = {};
+
+        const canvas = document.getElementById('sonarCanvas');
+        const ctx = canvas.getContext('2d');
+        const timelineSlider = document.getElementById('timelineSlider');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            if (window.lucide) lucide.createIcons();
+
+            const savedNotes = localStorage.getItem('fl_best_central_idea_notes');
+            if (savedNotes) {
+                document.getElementById('elaNotes').value = savedNotes;
+            }
+
+            document.getElementById('elaNotes').addEventListener('input', (e) => {
+                localStorage.setItem('fl_best_central_idea_notes', e.target.value);
+                document.getElementById('noteSaveStatus').innerText = 'Saved at ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            });
+
+            renderChaptersSidebar();
+            renderChapterMarkers();
+            renderChecklist();
+            renderQuiz();
+            renderCanvasFrame();
+        });
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * (window.devicePixelRatio || 1);
+            canvas.height = rect.height * (window.devicePixelRatio || 1);
+            renderCanvasFrame();
+        }
+
+        function playChime(type) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'click') {
+                    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                } else if (type === 'error') {
+                    osc.frequency.setValueAtTime(240, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.2);
+                }
+            } catch(e) { }
+        }
+
+        function togglePlay() {
+            playChime('click');
+            if (isPlaying) {
+                pauseVideo();
+            } else {
+                startVideo();
+            }
+        }
+
+        function startVideo() {
+            isPlaying = true;
+            document.getElementById('overlayPlayIcon').setAttribute('data-lucide', 'pause');
+            document.getElementById('playBtnIcon').setAttribute('data-lucide', 'pause');
+            document.getElementById('playOverlay').classList.add('opacity-0', 'pointer-events-none');
+            if (window.lucide) lucide.createIcons();
+
+            lastTimestamp = performance.now();
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function pauseVideo() {
+            isPlaying = false;
+            document.getElementById('overlayPlayIcon').setAttribute('data-lucide', 'play');
+            document.getElementById('playBtnIcon').setAttribute('data-lucide', 'play');
+            document.getElementById('playOverlay').classList.remove('opacity-0', 'pointer-events-none');
+            if (window.lucide) lucide.createIcons();
+
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        }
+
+        function restartVideo() {
+            currentTime = 0;
+            updateTimelineUI();
+            renderCanvasFrame();
+            if (!isPlaying) startVideo();
+        }
+
+        let lastTimestamp = 0;
+        function gameLoop(timestamp) {
+            if (!isPlaying) return;
+
+            const delta = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+
+            currentTime += delta * playbackSpeed;
+            if (currentTime >= duration) {
+                currentTime = duration;
+                pauseVideo();
+            }
+
+            updateTimelineUI();
+            checkChapterProgress();
+            renderCanvasFrame();
+
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function updateTimelineUI() {
+            const percent = (currentTime / duration) * 100;
+            timelineSlider.value = percent;
+            document.getElementById('currentTimeText').innerText = formatTime(currentTime);
+            document.getElementById('durationTimeText').innerText = formatTime(duration);
+        }
+
+        function seekVideo(val) {
+            currentTime = (val / 100) * duration;
+            updateTimelineUI();
+            checkChapterProgress();
+            renderCanvasFrame();
+        }
+
+        function changeSpeed(val) {
+            playbackSpeed = parseFloat(val);
+        }
+
+        function toggleAudioMute() {
+            const icon = document.getElementById('volumeIcon');
+            if (icon.getAttribute('data-lucide') === 'volume-2') {
+                icon.setAttribute('data-lucide', 'volume-x');
+            } else {
+                icon.setAttribute('data-lucide', 'volume-2');
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function toggleFullscreen() {
+            const playerBox = canvas.parentElement.parentElement;
+            if (!document.fullscreenElement) {
+                playerBox.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function formatTime(secs) {
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function checkChapterProgress() {
+            let activeIdx = 0;
+            for (let i = CHAPTERS.length - 1; i >= 0; i--) {
+                if (currentTime >= CHAPTERS[i].time) {
+                    activeIdx = i;
+                    break;
+                }
+            }
+
+            if (activeIdx !== currentChapterIndex) {
+                currentChapterIndex = activeIdx;
+                renderChaptersSidebar();
+            }
+
+            updateSubtitles();
+        }
+
+        function updateSubtitles() {
+            const captionEl = document.getElementById('captionText');
+            if (currentTime < 40) {
+                captionEl.innerText = 'Expedition 1: "Over 80% of Earth\'s sea floor is unmapped due to extreme depth and darkness."';
+                document.getElementById('depthVal').innerText = '1,200m';
+            } else if (currentTime < 90) {
+                captionEl.innerText = 'Expedition 2: "Autonomous submersibles descend thousands of meters, operating close to the seabed."';
+                document.getElementById('depthVal').innerText = '3,850m';
+            } else if (currentTime < 130) {
+                captionEl.innerText = 'Expedition 3: "Multibeam acoustic sonar fires thousands of sound waves to construct 3D terrain maps."';
+                document.getElementById('depthVal').innerText = '5,100m';
+            } else {
+                captionEl.innerText = 'Expedition 4: "Central Idea: Submersibles transform ocean mapping, benefiting science, ecosystems, and safety."';
+                document.getElementById('depthVal').innerText = '6,200m';
+            }
+        }
+
+        function renderCanvasFrame() {
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Deep Sea Gradient Background
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+            bgGrad.addColorStop(0, '#040d1a');
+            bgGrad.addColorStop(1, '#020617');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+
+            // Grid Wireframe
+            ctx.strokeStyle = 'rgba(14, 165, 233, 0.15)';
+            ctx.lineWidth = 1;
+            const gridSpacing = w / 16;
+            const offsetX = (currentTime * 20) % gridSpacing;
+
+            for (let x = -gridSpacing; x < w + gridSpacing; x += gridSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x - offsetX, 0);
+                ctx.lineTo(x - offsetX, h);
+                ctx.stroke();
+            }
+
+            // Draw Seafloor Terrain Mesh
+            ctx.fillStyle = '#082f49';
+            ctx.beginPath();
+            ctx.moveTo(0, h);
+            for (let x = 0; x <= w; x += 20) {
+                const elev = Math.sin((x + currentTime * 30) * 0.01) * 25 + Math.cos(x * 0.02) * 15;
+                ctx.lineTo(x, h * 0.75 + elev);
+            }
+            ctx.lineTo(w, h);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw Autonomous Submersible Body
+            const subX = w * 0.45;
+            const subY = h * 0.35 + Math.sin(currentTime * 2) * 10;
+
+            // Submersible Body
+            ctx.fillStyle = '#0284c7';
+            ctx.beginPath();
+            ctx.roundRect(subX - 45, subY - 18, 90, 36, 18);
+            ctx.fill();
+
+            // Submersible Thruster Glow
+            ctx.fillStyle = '#22d3ee';
+            ctx.beginPath();
+            ctx.arc(subX - 45, subY, 8 + Math.sin(currentTime * 10) * 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Sonar Beam Pulses
+            const pulseRadius = (currentTime * 60) % (h * 0.45);
+            ctx.strokeStyle = 'rgba(34, 211, 238, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(subX, subY, pulseRadius, Math.PI * 0.3, Math.PI * 0.7);
+            ctx.stroke();
+
+            // Text Label Overlay in Canvas
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = 'bold 12px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('AUTONOMOUS SONAR SUBMERSIBLE', subX, subY - 28);
+
+            const chapterObj = CHAPTERS[currentChapterIndex];
+            document.getElementById('canvasChapterTitle').innerText = chapterObj.title;
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = QUIZ_QUESTIONS.map((q, qIdx) => {
+                const userAns = userQuizAnswers[qIdx];
+                const isAnswered = userAns !== undefined;
+
+                return `
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-ocean-950 border border-ocean-700 text-cyan-400 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                Question ${q.id} • ${q.category}
+                            </span>
+                            ${isAnswered ? 
+                                (userAns === q.correct ? 
+                                    `<span class="text-xs font-bold text-emerald-400 flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1"></i> Correct</span>` : 
+                                    `<span class="text-xs font-bold text-rose-400 flex items-center"><i data-lucide="x-circle" class="w-4 h-4 mr-1"></i> Incorrect</span>`
+                                ) : `<span class="text-xs text-slate-500">Unanswered</span>`
+                            }
+                        </div>
+
+                        <h4 class="text-xs sm:text-sm font-bold text-white leading-snug">${q.question}</h4>
+
+                        <div class="space-y-2 pt-1">
+                            ${q.options.map((opt, oIdx) => {
+                                let btnStyle = "bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800";
+                                let iconMarkup = `<i data-lucide="circle" class="w-4 h-4 text-slate-600 shrink-0"></i>`;
+
+                                if (isAnswered) {
+                                    if (oIdx === q.correct) {
+                                        btnStyle = "bg-emerald-950/80 border-emerald-500/80 text-emerald-200 font-bold ring-1 ring-emerald-500";
+                                        iconMarkup = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>`;
+                                    } else if (oIdx === userAns) {
+                                        btnStyle = "bg-rose-950/80 border-rose-500/80 text-rose-200 font-medium";
+                                        iconMarkup = `<i data-lucide="x-circle" class="w-4 h-4 text-rose-400 shrink-0"></i>`;
+                                    } else {
+                                        btnStyle = "bg-slate-950 border-slate-900 text-slate-600 opacity-50";
+                                    }
+                                }
+
+                                return `
+                                    <button 
+                                        onclick="answerQuiz(${qIdx}, ${oIdx})" 
+                                        ${isAnswered ? 'disabled' : ''} 
+                                        class="w-full text-left p-3 text-xs sm:text-sm border rounded-xl transition flex justify-between items-center ${btnStyle}">
+                                        <span class="pr-2">${opt}</span>
+                                        ${iconMarkup}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+
+                        ${isAnswered ? `
+                            <div class="mt-3 p-3 rounded-xl ${userAns === q.correct ? 'bg-emerald-950/60 border border-emerald-800/80 text-emerald-200' : 'bg-rose-950/60 border border-rose-800/80 text-rose-200'} text-xs leading-relaxed space-y-1">
+                                <div class="font-bold uppercase text-[10px] tracking-wider">${userAns === q.correct ? '🎉 Benchmark Insight' : '💡 Review Explanation'}</div>
+                                <p>${q.explanation}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            if (window.lucide) lucide.createIcons();
+            updateQuizScoreboard();
+        }
+
+        function answerQuiz(qIdx, selectedIdx) {
+            if (userQuizAnswers[qIdx] !== undefined) return;
+
+            userQuizAnswers[qIdx] = selectedIdx;
+            const q = QUIZ_QUESTIONS[qIdx];
+
+            if (selectedIdx === q.correct) {
+                playChime('success');
+            } else {
+                playChime('error');
+            }
+
+            renderQuiz();
+
+            const totalAnswered = Object.keys(userQuizAnswers).length;
+            if (totalAnswered === QUIZ_QUESTIONS.length) {
+                masterChecklist.c3 = true;
+                renderChecklist();
+            }
+        }
+
+        function updateQuizScoreboard() {
+            let correctCount = 0;
+            Object.keys(userQuizAnswers).forEach(qIdx => {
+                if (userQuizAnswers[qIdx] === QUIZ_QUESTIONS[qIdx].correct) {
+                    correctCount++;
+                }
+            });
+
+            const total = QUIZ_QUESTIONS.length;
+            document.getElementById('quizScoreDisplay').innerText = `${correctCount} / ${total}`;
+            const pct = (Object.keys(userQuizAnswers).length / total) * 100;
+            document.getElementById('quizProgressBar').style.width = `${pct}%`;
+
+            const badgeText = document.getElementById('badgeStatusText');
+            if (correctCount === total) {
+                badgeText.innerText = 'Deep-Sea Master 🏆';
+            } else if (correctCount >= 5) {
+                badgeText.innerText = 'Sonar Navigator 🌟';
+            } else if (correctCount > 0) {
+                badgeText.innerText = 'Submersible Trainee 🔍';
+            } else {
+                badgeText.innerText = 'Novice Explorer (0/8)';
+            }
+        }
+
+        function resetQuizState() {
+            playChime('click');
+            userQuizAnswers = {};
+            renderQuiz();
+        }
+
+        function renderChaptersSidebar() {
+            const list = document.getElementById('chapterList');
+            list.innerHTML = '';
+
+            CHAPTERS.forEach((ch, idx) => {
+                const isActive = idx === currentChapterIndex;
+                const card = document.createElement('div');
+                card.className = `p-2.5 rounded-xl border transition cursor-pointer flex items-start space-x-2.5 ${
+                    isActive ? 'bg-slate-950 border-cyan-500/80 ring-1 ring-cyan-500/50' : 'bg-slate-950/60 border-slate-800 hover:bg-slate-950'
+                }`;
+                card.onclick = () => {
+                    playChime('click');
+                    jumpToTimestamp(ch.time);
+                };
+
+                card.innerHTML = `
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs ${
+                        isActive ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                    }">
+                        ${idx + 1}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h5 class="text-xs font-bold text-white">${ch.title}</h5>
+                            <span class="text-[10px] font-mono text-slate-500">${formatTime(ch.time)}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${ch.desc}</p>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function renderChapterMarkers() {
+            const container = document.getElementById('chapterMarkersContainer');
+            container.innerHTML = '';
+
+            CHAPTERS.forEach(ch => {
+                const percent = (ch.time / duration) * 100;
+                const dot = document.createElement('div');
+                dot.className = 'absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-cyan-400 border border-slate-950 rounded-full cursor-pointer hover:scale-125 transition-transform';
+                dot.style.left = `${percent}%`;
+                dot.title = ch.title;
+                dot.onclick = (e) => {
+                    e.stopPropagation();
+                    jumpToTimestamp(ch.time);
+                };
+                container.appendChild(dot);
+            });
+        }
+
+        function jumpToTimestamp(secs) {
+            currentTime = secs;
+            updateTimelineUI();
+            checkChapterProgress();
+            renderCanvasFrame();
+        }
+
+        function switchTab(tabId) {
+            playChime('click');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+        }
+
+        function showDetailAnalysis(num) {
+            playChime('click');
+            const box = document.getElementById('detailAnalysisBox');
+            const title = document.getElementById('detailAnalysisTitle');
+            const text = document.getElementById('detailAnalysisText');
+            box.classList.remove('hidden');
+
+            if (num === 1) {
+                title.innerText = "Supporting Detail 1: Technology Shift";
+                text.innerText = "This sentence introduces the central technological contrast (traditional ships vs. autonomous sonar submersibles), laying the foundation for the central idea.";
+            } else if (num === 2) {
+                title.innerText = "Supporting Detail 2: How Sonar Operates";
+                text.innerText = "This detail elaborates on HOW the submersibles create 3D bathymetric maps using acoustic sound pulses close to the seafloor.";
+            } else if (num === 3) {
+                title.innerText = "Supporting Detail 3: Real-World Applications";
+                text.innerText = "This detail proves WHY ocean floor mapping matters (tsunami prediction, protecting coral reefs, installing internet cables), expanding the central idea's significance.";
+            }
+        }
+
+        function checkOrganizerFormula() {
+            const s1 = document.getElementById('orgStep1').value;
+            const s2 = document.getElementById('orgStep2').value;
+            const s3 = document.getElementById('orgStep3').value;
+            const res = document.getElementById('organizerResult');
+
+            if (!s1 || !s2 || !s3) {
+                res.className = 'p-3.5 rounded-xl border border-slate-800 bg-slate-950 text-xs text-slate-400 text-center font-medium';
+                res.innerText = 'Select an option for all 3 pyramid levels above!';
+                return;
+            }
+
+            if (s1 === 'submersibles' && s2 === 'revolutionize' && s3 === 'benefit') {
+                playChime('success');
+                res.className = 'p-3.5 rounded-xl border border-emerald-500/80 bg-emerald-950/60 text-xs text-emerald-200 font-bold text-center';
+                res.innerHTML = '🎉 Complete Central Idea Formulated! "Autonomous submersibles are revolutionizing ocean mapping through precise sonar, providing critical data for hazards, ecosystems, and infrastructure."';
+                masterChecklist.c2 = true;
+                renderChecklist();
+            } else {
+                res.className = 'p-3.5 rounded-xl border border-rose-500/80 bg-rose-950/60 text-xs text-rose-200 font-medium text-center';
+                res.innerText = '❌ Pyramid mismatched! Make sure your topic, main point, and supporting purpose directly match the main takeaway of the article. Try again!';
+            }
+        }
+
+        function resetOrganizer() {
+            document.getElementById('orgStep1').value = '';
+            document.getElementById('orgStep2').value = '';
+            document.getElementById('orgStep3').value = '';
+            checkOrganizerFormula();
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checkListContainer');
+            container.innerHTML = `
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" ${masterChecklist.c1 ? 'checked' : ''} onchange="toggleCheck('c1')" class="rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500">
+                    <span>Watch Deep-Sea Expedition Video</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" ${masterChecklist.c2 ? 'checked' : ''} onchange="toggleCheck('c2')" class="rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500">
+                    <span>Build Central Idea Pyramid Formula</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" ${masterChecklist.c3 ? 'checked' : ''} onchange="toggleCheck('c3')" class="rounded border-slate-700 bg-slate-900 text-cyan-500 focus:ring-cyan-500">
+                    <span>Complete 8-Question Assessment</span>
+                </label>
+            `;
+
+            const count = Object.values(masterChecklist).filter(Boolean).length;
+            document.getElementById('checklistCount').innerText = `${count}/3 Completed`;
+        }
+
+        function toggleCheck(key) {
+            masterChecklist[key] = !masterChecklist[key];
+            renderChecklist();
+        }
+
+        function insertFormulaPrompt() {
+            const area = document.getElementById('elaNotes');
+            area.value += "\n\n[Florida B.E.S.T. Central Idea Formula]\n- Central Idea = Topic + What author proves about it\n- Supporting Details = Specific facts, examples, or statistics that develop the central idea.";
+            area.focus();
+        }
+
+        function exportNotes() {
+            const txt = document.getElementById('elaNotes').value;
+            if (!txt.trim()) {
+                alert('Notes pad is empty!');
+                return;
+            }
+            const blob = new Blob([txt], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Florida_6th_Grade_Central_Idea_Notes.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
